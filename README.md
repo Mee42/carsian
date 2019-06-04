@@ -13,4 +13,28 @@ IO is managed in `in.c` and `out.c`. Both maintain a buffer, which can be set so
 
 ## How to build
 
-This needs to be compiled on the base system, so no binaries will be distributed. jjt
+This needs to be compiled on the base system, so no binaries will be distributed. 
+
+This project can be build using `make`.
+
+##### To build bin file
+
+```
+$ make
+```
+collect your bin file from `out/os.bin`
+
+
+##### To run in qemu
+
+```
+$ make run
+```
+all dependencies must be installed
+
+
+## Dependencies
+- ld
+- gcc
+- nasm
+- qemu-system-x86_64
