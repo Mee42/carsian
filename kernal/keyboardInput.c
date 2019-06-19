@@ -16,6 +16,8 @@
 #define KEY_ENTER 0x1C
 #define KEY_SHIFT 0x2A
 
+#define KEY_CTRL
+
 byte getReleaseFor(byte in){
 //    switch(in){
 //        case 0x02: return 0x82;
