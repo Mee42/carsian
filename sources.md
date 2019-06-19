@@ -8,3 +8,7 @@
 
 [Info for keyboard](https://wiki.osdev.org/PS2_Keyboard)
 *PS/2 Keyboard* **osdev.org**
+
+[More info on VGA](https://en.wikipedia.org/wiki/VGA-compatible_text_mode)
+*VGA-compatible text mode* **wikipedia.org**
+

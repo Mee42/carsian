@@ -16,7 +16,10 @@
 #define KEY_ENTER 0x1C
 #define KEY_SHIFT 0x2A
 
-#define KEY_CTRL
+#define KEY_ARROW_UP 0x48
+#define KEY_ARROW_DOWN 0x50
+#define KEY_ARROW_LEFT 0x4B
+#define KEY_ARROW_RIGHT 0x4D
 
 byte getReleaseFor(byte in){
 //    switch(in){
@@ -50,28 +53,29 @@ bool isReleaseCode(byte code){
 }
 
 byte handleAlias(byte code){
+    return code;
     if(isReleaseCode(code)){
         return getReleaseFor(handleAlias(getKeycodeForRelease(code)));
     }
     switch(code){
-        case 0xD2: return 0x0B;//keypad 0
-        case 0xCF: return 0x02;//keypad 1
-        case 0xD0: return 0x03;//keypad 2
-        case 0xD1: return 0x04;//keypad 3
-        case 0xCB: return 0x05;//keypad 4
-        case 0xCC: return 0x06;//keypad 5
-        case 0xCD: return 0x07;//keypad 6
-        case 0x47: return 0x08;//keypad 7
-        case 0xC8: return 0x09;//keypad 8
-        case 0xC9: return 0x0a;//keypad 9
+//        case 0xD2: return 0x0B;//keypad 0  //THESE KEYPAD KEYS ARE ALSO THE ARROW KEYS
+//        case 0xCF: return 0x02;//keypad 1
+//        case 0xD0: return 0x03;//keypad 2
+//        case 0xD1: return 0x04;//keypad 3
+//        case 0xCB: return 0x05;//keypad 4
+//        case 0xCC: return 0x06;//keypad 5
+//        case 0xCD: return 0x07;//keypad 6
+//        case 0x47: return 0x08;//keypad 7
+//        case 0xC8: return 0x09;//keypad 8
+//        case 0xC9: return 0x0a;//keypad 9
         case 0x36: return 0x2A;//right shift to left shift
     }
     return code;
 }
 
 char getKeycodeFor(byte in){
-    char * numbers = "1234567890-=??qwertyuiop[]??asdfghjkl;'`?\\zxcvbnm,./?*? ?????????????789-456+1230.";
-    if(in >= 0x01 && in <= 0X53){
+    char * numbers = "1234567890-=??qwertyuiop[]??asdfghjkl;'`?\\zxcvbnm,./?*? ????????????????-???+????.";
+    if(in >= 0x01 && in <= 0x53){
         return numbers[in - 0x02];
     }
 
@@ -117,7 +121,7 @@ void addToCache(byte b){
 }
 
 char toUpperCase(char in){
-    char * lower = "abcdefghjiklmnopqrstuvwxyz`1234567890-=\\[];',./!";//ends with a !
+    char * lower = "abcdefghijklmnopqrstuvwxyz`1234567890-=\\[];',./!";//ends with a !
     char * upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+|{}:\"<>?!";
     while(*lower != '!'){
 //        if(lower[size] == in){
@@ -137,10 +141,18 @@ char toUpperCase(char in){
 void outputChar(byte in){
     if(in == KEY_SHIFT) {
         //don't print shifts, dummy
-    }else if(in == KEY_BACKSPACE){
-        movePointerBack();
+    }else if(in == KEY_BACKSPACE) {
+        movePointerLeft();
         printChar(' ');
-        movePointerBack();
+        movePointerLeft();
+    }else if(in == KEY_ARROW_UP) {
+        movePointerUp();
+    }else if(in == KEY_ARROW_LEFT) {
+        movePointerLeft();
+    }else if(in == KEY_ARROW_RIGHT) {
+        movePointerRight();
+    }else if(in == KEY_ARROW_DOWN){
+        movePointerDown();
     }else if(in == KEY_ENTER){
         printNewline();
     }else if(in == KEY_ESCAPE) {
@@ -159,7 +171,7 @@ void outputChar(byte in){
     }
 }
 
-void keeb(){
+void typer(){
     cache = malloc(sizeof(byte) * CACHE_SIZE);//64 slots in the array
     //never free the cache, o o f
 
@@ -169,6 +181,7 @@ void keeb(){
 
 
     while(true){
+        adjustBlinker();
         byte input = handleAlias(port_byte_in(0x60));
         if(!cacheContains(input)){
             if(isReleaseCode(input)){

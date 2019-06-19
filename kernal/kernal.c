@@ -112,7 +112,7 @@ void assert(byte bool){
 void main(){
     freeAll();
     printString("$ ");
-    keeb();
+    typer();
 }
 
 

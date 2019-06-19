@@ -4,5 +4,5 @@
 
 #ifndef CARSIAN_KEYBOARDINPUT_H
 #define CARSIAN_KEYBOARDINPUT_H
-void keeb();
+void typer();
 #endif //CARSIAN_KEYBOARDINPUT_H
