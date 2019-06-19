@@ -1,11 +1,12 @@
+SHELL=/bin/bash
 KERNAL_SRC := src
 BUILD := build
 
-all: out/os.bin
-	
-KERNAL_BUILDS := $(shell bash -c "find -print | grep \"./kernal/.*\.c\"  | sed -r 's/kernal\/([a-zA-Z]*)\.c/build\/\1.o/' | tr \"\n\" \" \"")
+all: os.bin
 
 
+# kernal.o needs to be first so it is properly offset
+KERNAL_BUILDS := ./build/kernal.o $(shell bash -c "find -print | grep \"./kernal/.*\.c\"  | sed -r 's/kernal\/([a-zA-Z]*)\.c/build\/\1.o/' | grep -Fv \"./build/kernal.o\" | tr \"\n\" \" \"")
 
 
 
@@ -15,35 +16,34 @@ build/kernal.bin : $(KERNAL_BUILDS)
 
 
 # build the kernal entry file
-build/kernal_entry.o : src/kernal_entry.asm build/
+build/kernal_entry.o : src/kernal_entry.asm
+	@mkdir -p build
 	nasm $< -f elf32 -o $@
 
 
 
 # build the kernal boot module
-build/boot.bin : src/boot.asm src/gdt.asm src/print_string_pm.asm src/switch_to_pm.asm src/print_string.asm src/disk_load.asm build/
+build/boot.bin : src/boot.asm src/gdt.asm src/print_string_pm.asm src/switch_to_pm.asm src/print_string.asm src/disk_load.asm
+	@mkdir -p build
 	nasm $< -f bin -o $@
 
 
-build/%.o : kernal/%.c build/
+build/%.o : kernal/%.c
+	@mkdir -p build
 	gcc -ffreestanding -m32 -fno-pie -c $< -o $@
 
-out/os.bin : build/boot.bin build/kernal.bin out/
+os.bin : build/boot.bin build/kernal.bin
 	cat build/boot.bin build/kernal.bin > $@
 
-run: out/os.bin
+run: os.bin
 	qemu-system-x86_64 -drive file=$<,if=floppy,index=0,media=disk,format=raw
 
-build/ :
-	mkdir build
-
-out/ :
-	mkdir out
 
 
 clean :
-	if [ -a build ];then rm -r build;fi
-	if [ -a out ];then rm -r out;fi
+	@rm -rf build
+	@rm -f os.bin
+	@rm -rf buildstd
 
 
 

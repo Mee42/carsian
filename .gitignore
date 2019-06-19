@@ -1,4 +1,6 @@
+.idea/
 Makefile.backup
 build/
 out/
-
+CMakeLists.txt
+cmake-build-debug/

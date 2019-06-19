@@ -1,9 +1,5 @@
 #include "ports.h"
-//kernal/ports.c
 
-int seven(){
-    return 7;
-}
 
 unsigned char port_byte_in(unsigned short port){
   unsigned char result;
