@@ -33,11 +33,18 @@ build/%.o : kernal/%.c
 	gcc -ffreestanding -m32 -fno-pie -c $< -o $@
 
 os.bin : build/boot.bin build/kernal.bin
-	cat build/boot.bin build/kernal.bin > $@
+	dd if=/dev/zero of=$@ bs=512 count=32
+	dd if=build/boot.bin of=$@ bs=512 conv=notrunc
+	dd if=build/kernal.bin of=$@ bs=512 seek=1 conv=notrunc
+
 
 run: os.bin
 	qemu-system-x86_64 -drive file=$<,if=floppy,index=0,media=disk,format=raw
+runf: os.bin
+	qemu-system-x86_64 -drive file=$<,format=raw
 
+dep: os.bin
+	sudo dd if=$< of=d/boot status=progress
 
 
 clean :

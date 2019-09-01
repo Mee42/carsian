@@ -2,6 +2,7 @@
 print_string:
   push ax
   push bx
+  push dx
   mov ah, 0x0e
   loop1:
     mov al, [bx]
@@ -10,7 +11,7 @@ print_string:
     mov dl, [bx]
     cmp dl, 0x0
     jne loop1
-
+  pop dx
   pop bx
   pop ax
   ret

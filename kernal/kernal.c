@@ -110,9 +110,9 @@ void assert(byte bool){
 
 
 void main(){
-    freeAll();
+//    freeAll();
     printString("$ ");
-    typer();
+//    typer();
 }
 
 

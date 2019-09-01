@@ -3,9 +3,7 @@
   push bx
   mov bx, DISK_START
   call print_string
-  pop bx
-
-
+  pop bx   
   
   push dx
   mov ah, 0x02
@@ -13,6 +11,7 @@
   mov cl, 0x02
   mov ch, 0x00
   mov dh, 0x00
+ 
 
   int 0x13
   jc disk_error0
@@ -28,8 +27,29 @@
   ret
 
 disk_error0:
-;  mov ax, cx
-;  call print_hex
+  loopY:
+  cmp ah, 0x0
+  je cont
+  mov bx, STARTING_DISK_ERROR
+  call print_string  
+  sub ah, 1
+  jmp loopY
+cont:
+; print a nice little counter
+  mov bx,NEWLINE
+  call print_string 
+  mov ah,8 ; 80 character screen, 10 characters
+loopS:
+  cmp ah,0x0
+  je cont2
+  mov bx, NUMBERS
+  call print_string
+  sub ah, 1
+  jmp loopS
+
+cont2:
+  mov bx,NEWLINE
+  call print_string
   mov bx, DISK_ERROR_0
   call print_string
   jmp $
@@ -39,7 +59,10 @@ disk_error1:
   call print_string
   jmp $
 
-DISK_ERROR_0 : db "Disk read error - 0!",10,13, 0
-DISK_ERROR_1 : db "Disk read error - 1!",10,13, 0
-DISK_START : db "Starting disk load", 10,13, 0
-DISK_SUCC : db "Loaded disk! - 0", 10,13,0
+STARTING_DISK_ERROR : db "X",0
+NEWLINE: db 10,13,0
+NUMBERS: db "1234567890",0
+DISK_ERROR_0 : db "Error0",10,13, 0
+DISK_ERROR_1 : db "Error1",10,13, 0
+DISK_START : db "Startingdisk", 10,13, 0
+DISK_SUCC : db "Loadeddisk", 10,13,0
