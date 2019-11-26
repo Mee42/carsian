@@ -49,10 +49,9 @@ all dependencies must be installed
 - qemu-system-x86_64
 
 
-# road map
-
-* Get this thing running outside of an emulator
-* Decide if I want to try to get 64-bit C running
-* Get input and output fleshed out
-* be able to read from the hard drive
-* Spread propaganda
+# Road Map
+- Get this thing running outside of an emulator
+- Decide if I want to try to get 64-bit C running
+- Get input and output fleshed out
+- Be able to read from the hard drive
+- Spread propaganda
