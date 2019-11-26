@@ -51,8 +51,8 @@ all dependencies must be installed
 
 # road map
 
-
-* Decide if I want to try to get 64-bit C running
-* Get input and fleshed out
 * Get this thing running outside of an emulator
+* Decide if I want to try to get 64-bit C running
+* Get input and output fleshed out
+* be able to read from the hard drive
 * Spread propaganda
