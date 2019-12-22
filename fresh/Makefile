@@ -5,12 +5,13 @@ BUILD := build
 all: os.bin
 
 
-
+SOURCE_FILES = $(wildcard src/*.asm)
+MAIN_SOURCE_FILE = src/boot.asm
 
 # build the kernal boot module
-build/boot.bin : src/boot.asm src/printer_16bit.asm # put other needed asm files here
+build/boot.bin : $(SOURCE_FILES)# put other needed asm files here
 	@mkdir -p build
-	nasm $< -f bin -o $@
+	nasm $(MAIN_SOURCE_FILE) -f bin -o $@
 
 
 os.bin : build/boot.bin
@@ -19,9 +20,9 @@ os.bin : build/boot.bin
 #	dd if=build/kernal.bin of=$@ bs=512 seek=1 conv=notrunc
 
 
-run: os.bin
-	qemu-system-x86_64 -drive file=$<,if=floppy,index=0,media=disk,format=raw
 runf: os.bin
+	qemu-system-x86_64 -drive file=$<,if=floppy,index=0,media=disk,format=raw
+run: os.bin
 	qemu-system-x86_64 -drive file=$<,format=raw
 
 dep: os.bin
