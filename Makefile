@@ -6,12 +6,14 @@ all: os.bin
 
 
 # kernal.o needs to be first so it is properly offset
-KERNAL_BUILDS := ./build/kernal.o $(shell bash -c "find -print | grep \"./kernal/.*\.c\"  | sed -r 's/kernal\/([a-zA-Z]*)\.c/build\/\1.o/' | grep -Fv \"./build/kernal.o\" | tr \"\n\" \" \"")
+KERNAL_BUILDS := ./build/kernal.o ./build/kernal_entry.o $(shell bash -c "find -print | grep \"./kernal/.*\.c\"  | sed -r 's/kernal\/([a-zA-Z]*)\.c/build\/\1.o/' | grep -Fv \"./build/kernal.o\" | tr \"\n\" \" \"")
 
-
+# don't package any other files in kernal.bin for reasons
+# KERNAL_BUILDS := ./build/kernal.o
 
 # build the kernal binary
 build/kernal.bin : $(KERNAL_BUILDS) 
+	echo $(KERNAL_BUILDS)
 	ld -o $@ -Ttext 0x1000 $^ --oformat binary -m elf_i386
 
 

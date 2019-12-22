@@ -6,15 +6,9 @@ all: os.bin
 
 
 
-# build the kernal entry file
-build/kernal_entry.o : src/kernal_entry.asm
-	@mkdir -p build
-	nasm $< -f elf32 -o $@
-
-
 
 # build the kernal boot module
-build/boot.bin : src/boot.asm # put other needed asm files here
+build/boot.bin : src/boot.asm src/printer_16bit.asm # put other needed asm files here
 	@mkdir -p build
 	nasm $< -f bin -o $@
 
@@ -31,7 +25,7 @@ runf: os.bin
 	qemu-system-x86_64 -drive file=$<,format=raw
 
 dep: os.bin
-	sudo dd if=$< of=d/boot status=progress
+	sudo dd if=$< of=d/drive status=progress
 
 
 clean :

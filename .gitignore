@@ -1,6 +1,10 @@
+os.bin
 .idea/
 Makefile.backup
 build/
 out/
 CMakeLists.txt
 cmake-build-debug/
+
+fresh/build/
+fresh/os.bin
