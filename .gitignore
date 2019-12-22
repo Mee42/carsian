@@ -8,3 +8,6 @@ cmake-build-debug/
 
 fresh/build/
 fresh/os.bin
+
+*.swp
+*.swo
