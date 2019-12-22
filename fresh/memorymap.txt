@@ -1,0 +1,15 @@
+==== inital state ====
+0x0     - 0x3FF:    IVT
+0x400   - 0x4FF:    BDA
+0x500   - 0x7BFF:   Unused - Free
+0x7C00  - 0x7DFF:   Boot sector
+0x7E00  - 0x7FFFF:  Unused - Free
+0x80000 - 0x9FBFF:  Partially free; check EBDA size before use
+0x9FC00 - 0x9FFFF:  EBDA
+0xA0000 - 0xFFFFF:  VRAM, ROM, VBIOS/BIOS, HW Data, etc (unusable) 
+
+==== memory used ====
+0x500 - 0x6FF:  boot sector copy
+0x900 - 0x7BFF: the stack
+:
+

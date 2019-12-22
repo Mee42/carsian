@@ -6,6 +6,7 @@ print_ax_hex:
   push cx ; cx is the counter
   push dx ; dx is for storing the bit
   mov bx, ax
+  xor ax, ax
   mov ah, 0x0e
   mov cx, 0x0
 
